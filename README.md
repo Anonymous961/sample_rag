@@ -5,7 +5,9 @@ A lightweight, local-first Retrieval-Augmented Generation (RAG) platform built f
 ## Architecture Stack
 * **Frontend:** React, Vite, TailwindCSS (Responsive Chat UI with inline File Uploader)
 * **Backend:** FastAPI (Modularized Application Structure)
-* **LLM Engine:** OpenRouter API (Using `openai/gpt-oss-20b:free`)
+* **LLM Engine:** Configurable Provider via `.env`
+  * Default: OpenRouter API (`openai/gpt-oss-20b:free`)
+  * Alternative: TCS GenAILab (via `langchain-openai`)
 * **Retriever:** LangChain
 * **Embeddings:** FastEmbed (ONNX Runtime, lightweight and fast)
 * **Vector Database:** FAISS CPU
@@ -32,9 +34,13 @@ pip install -r requirements.txt
 ```
 
 Create an environment configuration file:
-Create a `.env` file inside the `backend/` directory with your OpenRouter key:
+Create a `.env` file inside the `backend/` directory based on the `.env.example` file provided:
 ```env
 OPENROUTER_API_KEY=your_super_secret_openrouter_api_key_here
+GENAILAB_API_KEY=your_genailab_key_here
+
+# Choose your provider here (defaults to openrouter)
+LLM_PROVIDER=openrouter  # Change to 'genailab' to use the GenAILab module
 ```
 
 ### 2. Setting Up the Frontend

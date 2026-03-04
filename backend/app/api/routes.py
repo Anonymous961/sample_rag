@@ -2,13 +2,18 @@ from fastapi import APIRouter, File, UploadFile
 from typing import Dict
 from app.models.schemas import ChatRequest, ChatResponse
 from app.services.chat import get_chat_response
+from app.services.llm_genailab import get_genailab_response
 from app.services.rag import ingest_document
+from app.core.config import settings
 
 router = APIRouter()
 
 @router.post("/chat", response_model=ChatResponse)
 async def chat_endpoint(req: ChatRequest):
-    response_text = await get_chat_response(req.message)
+    if settings.LLM_PROVIDER.lower() == "genailab":
+        response_text = await get_genailab_response(req.message)
+    else:
+        response_text = await get_chat_response(req.message)
     return ChatResponse(response=response_text)
 
 @router.get("/health")
